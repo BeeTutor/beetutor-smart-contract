@@ -17,6 +17,7 @@ contract CourseAuction {
 
     struct Bid {
         address bidder;
+        uint256 bidTime;
         uint256 amount;
     }
 
@@ -36,6 +37,7 @@ contract CourseAuction {
         uint256 courseId,
         uint256 batchId,
         address bidder,
+        uint256 bidTime,
         uint256 amount
     );
     event AuctionFinalized(uint256 courseId, uint256 batchId);
@@ -74,10 +76,20 @@ contract CourseAuction {
         require(msg.value >= auction.minPrice, "Bid too low");
 
         bids[courseId][batchId].push(
-            Bid({bidder: msg.sender, amount: msg.value})
+            Bid({
+                bidder: msg.sender,
+                bidTime: block.timestamp,
+                amount: msg.value
+            })
         );
 
-        emit BidPlaced(courseId, batchId, msg.sender, msg.value);
+        emit BidPlaced(
+            courseId,
+            batchId,
+            msg.sender,
+            block.timestamp,
+            msg.value
+        );
     }
 
     // Close the bidding and confirm the winning bidder.
