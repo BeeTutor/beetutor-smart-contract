@@ -1,3 +1,14 @@
+## Check list for chain config
+
+-   [ ] Add Linea sepolia
+-   [ ] Add Flow EVM-testnet
+-   [ ] Add Scroll Sepolia
+-   [ ] Add Mantle Sepolia
+-   [ ] Add Zircuit Testnet
+-   [ ] Add Base Sepolia
+-   [ ] Add Rootstock Testnet
+-   [ ] Add Morph Holesky
+
 ## Foundry
 
 **Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
