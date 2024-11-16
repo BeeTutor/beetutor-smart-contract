@@ -110,13 +110,14 @@ contract CourseCertificate is ERC1155, Ownable {
         address winner,
         uint256 courseId,
         uint256 batchId
-    ) external onlyAuction {
+    ) external onlyAuction returns (bool) {
         require(courses[courseId].isActive, "Course is not active");
         require(batches[courseId][batchId].isActive, "Batch is not active");
         require(batches[courseId][batchId].enrolledStudents < batches[courseId][batchId].maxStudents, "Batch is full");
         
         _mint(winner, courseId, 1, "");
         batches[courseId][batchId].enrolledStudents++;
+        return true;
     }
 
     // Upgrade NFT
@@ -163,6 +164,20 @@ contract CourseCertificate is ERC1155, Ownable {
     ) external view returns (uint256 level, uint256 lastUpgradeTime, bool isCompleted) {
         NFTLevel memory nftLevel = nftLevels[courseId][student];
         return (nftLevel.level, nftLevel.lastUpgradeTime, nftLevel.isCompleted);
+    }
+
+        function getBatchInfo(
+        uint256 courseId,
+        uint256 batchId
+    ) external view returns (
+        uint256 startTime,
+        uint256 endTime,
+        uint256 maxStudents,
+        uint256 enrolledStudents,
+        bool isActive
+    ) {
+        BatchInfo memory batch = batches[courseId][batchId];
+        return (batch.startTime, batch.endTime, batch.maxStudents, batch.enrolledStudents, batch.isActive);
     }
 
     // Override the _update function to implement transfer restrictions
