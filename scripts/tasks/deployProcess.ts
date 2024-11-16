@@ -117,14 +117,14 @@ task('deploy:CourseCertificate', 'Deploy CourseCertificate contract')
   })
 
 task('deploy:CourseAuction', 'Deploy CourseAuction contract')
-  .addParam('courseCertificateAddress')
-  .addParam('honeyTokenAddress')
+  .addParam('coursecertificateaddress')
+  .addParam('honeytokenaddress')
   .addFlag('verify', 'Validate contract after deploy')
-  .setAction(async ({ courseCertificateAddress, honeyTokenAddress, verify }, hre) => {
+  .setAction(async ({ coursecertificateaddress, honeytokenaddress, verify }, hre) => {
     await hre.run('compile')
     const [signer]: any = await hre.ethers.getSigners()
     const contractFactory = await hre.ethers.getContractFactory('CourseAuction')
-    const deployContract = await contractFactory.connect(signer).deploy(courseCertificateAddress, honeyTokenAddress)
+    const deployContract = await contractFactory.connect(signer).deploy(coursecertificateaddress, honeytokenaddress)
     console.log(`CourseAuction deployed to`, await deployContract.getAddress())
 
     const address = {
@@ -140,7 +140,7 @@ task('deploy:CourseAuction', 'Deploy CourseAuction contract')
       try {
         await hre.run('verify:verify', {
           address: await deployContract.getAddress(),
-          constructorArguments: [courseCertificateAddress, honeyTokenAddress],
+          constructorArguments: [coursecertificateaddress, honeytokenaddress],
           contract: 'src/CourseAuction.sol:CourseAuction',
         })
       } catch (e) {
