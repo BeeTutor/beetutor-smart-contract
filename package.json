@@ -12,7 +12,7 @@
     "deploy:Counter": "hardhat deploy:Counter --verify",
     "deploy:HoneyToken": "hardhat deploy:HoneyToken --verify",
     "deploy:CourseCertificate": "hardhat deploy:CourseCertificate --verify",
-    "deploy:CourseAuction": "hardhat deploy:CourseAuction --verify --courseCertificateAddress"
+    "deploy:CourseAuction": "hardhat deploy:CourseAuction --verify"
   },
   "keywords": [],
   "author": "",

@@ -2,9 +2,11 @@
 pragma solidity ^0.8.20;
 
 import "./CourseCertificate.sol";
+import "./HoneyToken.sol";
 
 contract CourseAuction {
     CourseCertificate public courseCertificate;
+    HoneyToken public honeyToken;
 
     struct Auction {
         uint256 courseId;
@@ -42,8 +44,18 @@ contract CourseAuction {
     );
     event AuctionFinalized(uint256 courseId, uint256 batchId);
 
-    constructor(address _courseCertificate) {
+    modifier onlyTeacher(uint256 courseId) {
+        (address teacher, , , , ) = courseCertificate.courses(courseId);
+        require(
+            msg.sender == teacher,
+            "Only course teacher can call this function"
+        );
+        _;
+    }
+
+    constructor(address _courseCertificate, address _honeyToken) {
         courseCertificate = CourseCertificate(_courseCertificate);
+        honeyToken = HoneyToken(_honeyToken);
     }
 
     function createAuction(
@@ -68,26 +80,34 @@ contract CourseAuction {
         emit AuctionCreated(courseId, batchId, startTime, endTime, minPrice);
     }
 
-    function placeBid(uint256 courseId, uint256 batchId) external payable {
+    function placeBid(
+        uint256 courseId,
+        uint256 batchId,
+        uint256 amount
+    ) external {
         Auction storage auction = auctions[courseId][batchId];
         require(auction.isActive, "Auction is not active");
         require(block.timestamp >= auction.startTime, "Auction not started");
         require(block.timestamp < auction.endTime, "Auction ended");
-        require(msg.value >= auction.minPrice, "Bid too low");
+        require(amount >= auction.minPrice, "Bid too low");
 
-        bids[courseId][batchId].push(
-            Bid({
-                bidder: msg.sender,
-                bidTime: block.timestamp,
-                amount: msg.value
-            })
+        require(
+            honeyToken.transferFrom(msg.sender, address(this), amount),
+            "Token Transfer failed"
         );
 
-        emit BidPlaced(courseId, batchId, msg.sender, block.timestamp, msg.value);
+        bids[courseId][batchId].push(
+            Bid({bidder: msg.sender, bidTime: block.timestamp, amount: amount})
+        );
+
+        emit BidPlaced(courseId, batchId, msg.sender, block.timestamp, amount);
     }
 
     // Close the bidding and confirm the winning bidder.
-    function finalizeAuction(uint256 courseId, uint256 batchId) external {
+    function finalizeAuction(
+        uint256 courseId,
+        uint256 batchId
+    ) external onlyTeacher(courseId) {
         Auction storage auction = auctions[courseId][batchId];
         require(auction.isActive, "Auction not active");
         require(block.timestamp >= auction.endTime, "Auction not ended");
@@ -126,7 +146,13 @@ contract CourseAuction {
 
         // Return the bids of the non-winning bidders.
         for (uint256 i = winnerCount; i < auctionBids.length; i++) {
-            payable(auctionBids[i].bidder).transfer(auctionBids[i].amount);
+            require(
+                honeyToken.transfer(
+                    auctionBids[i].bidder,
+                    auctionBids[i].amount
+                ),
+                "Token Transfer failed"
+            );
         }
 
         auction.isActive = false;
