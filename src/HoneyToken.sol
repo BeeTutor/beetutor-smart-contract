@@ -11,9 +11,9 @@ contract HoneyToken is ERC20, Ownable {
     {}
 
     /**
-     * @dev 鑄造新的代幣
-     * @param to 接收代幣的地址
-     * @param amount 鑄造的代幣數量
+     * @dev Mint new tokens
+     * @param to The address to receive the tokens
+     * @param amount The amount of tokens to mint
      */
     function mint(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);

@@ -5,29 +5,29 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract CourseCertificate is ERC1155, Ownable {
-    // 課程結構
+    // Course structure
     struct Course {
-        address teacher;           // 老師地址
-        string name;              // 課程名稱
-        string description;       // 課程描述
-        uint256 courseId;         // 課程 ID
-        bool isActive;            // 課程是否有效
+        address teacher;           // Teacher address
+        string name;              // Course name
+        string description;       // Course description
+        uint256 courseId;         // Course ID
+        bool isActive;            // Whether the course is active
     }
 
-    // 課程梯次結構
+    // Course Batch structure
     struct BatchInfo {
-        uint256 startTime;        // 開始時間
-        uint256 endTime;          // 結束時間
-        uint256 maxStudents;      // 學生人數上限
-        uint256 enrolledStudents; // 已註冊學生數
-        bool isActive;            // 梯次是否有效
+        uint256 startTime;        // Start time
+        uint256 endTime;          // End time
+        uint256 maxStudents;      // Maximum number of students
+        uint256 enrolledStudents; // Number of enrolled students
+        bool isActive;           // Whether the batch is active
     }
 
-    // NFT 等級結構
+    // NFT Level structure
     struct NFTLevel {
-        uint256 level;           // 目前等級
-        uint256 lastUpgradeTime; // 最後升級時間
-        bool isCompleted;        // 是否完成課程
+        uint256 level;           // Current level
+        uint256 lastUpgradeTime; // Last upgrade time
+        bool isCompleted;        // Whether the course is completed
     }
 
     // 映射：courseId => Course
@@ -37,7 +37,7 @@ contract CourseCertificate is ERC1155, Ownable {
     // 映射：tokenId => NFTLevel
     mapping(uint256 => mapping(address => NFTLevel)) public nftLevels;
 
-    // 升級事件
+    // Upgrade event
     event NFTUpgraded(
         uint256 indexed tokenId,
         address indexed student,
@@ -46,10 +46,10 @@ contract CourseCertificate is ERC1155, Ownable {
         bool isCompleted
     );
     
-    // 課程計數器
+    // Course counter
     uint256 private _courseIdCounter;
     
-    // 只允許競標合約調用的修飾器
+    // Modifier to only allow the auction contract to call
     modifier onlyAuction() {
         require(msg.sender == auctionContract, "Only auction contract can call this");
         _;
@@ -61,12 +61,12 @@ contract CourseCertificate is ERC1155, Ownable {
         _courseIdCounter = 1;
     }
 
-    // 設置競標合約地址
+    // Set the auction contract address
     function setAuctionContract(address _auctionContract) external onlyOwner {
         auctionContract = _auctionContract;
     }
 
-    // 創建新課程
+    // Create a new course
     function createCourse(
         string memory name,
         string memory description
@@ -84,7 +84,7 @@ contract CourseCertificate is ERC1155, Ownable {
         return courseId;
     }
 
-    // 添加課程梯次
+    // Add a course batch
     function addCourseBatch(
         uint256 courseId,
         uint256 batchId,
@@ -105,7 +105,7 @@ contract CourseCertificate is ERC1155, Ownable {
         });
     }
 
-    // 為得標者鑄造 NFT（只能由競標合約調用）
+    // Mint NFTs for the winners (only the auction contract can call)
     function mintForWinner(
         address winner,
         uint256 courseId,
@@ -119,35 +119,35 @@ contract CourseCertificate is ERC1155, Ownable {
         batches[courseId][batchId].enrolledStudents++;
     }
 
-    // 升級 NFT
+    // Upgrade NFT
     function upgradeNFT(
         uint256 courseId,
         address student,
         uint256 newLevel
     ) external {
-        // 檢查呼叫者是否為課程老師
+        // Check if the caller is the course teacher
         require(courses[courseId].teacher == msg.sender, "Only teacher can upgrade NFT");
         
-        // 檢查學生是否擁有該 NFT
+        // Check if the student owns the NFT
         require(balanceOf(student, courseId) > 0, "Student does not own this NFT");
 
-        // 獲取當前 NFT 等級資訊
+        // Get the current NFT level information
         NFTLevel storage nftLevel = nftLevels[courseId][student];
         
-        // 確保新等級大於當前等級
+        // Ensure the new level is higher than the current level
         require(newLevel > nftLevel.level, "New level must be higher than current level");
         
-        // 如果要標記為完成，確保之前未完成
+        // If marking as completed, ensure it hasn't been completed before
         require(!nftLevel.isCompleted, "Course already completed");
 
-        // 記錄舊等級用於事件
+        // Record the old level for the event
         uint256 oldLevel = nftLevel.level;
 
-        // 更新 NFT 等級資訊
+        // Update the NFT level information
         nftLevel.level = newLevel;
         nftLevel.lastUpgradeTime = block.timestamp;
         nftLevel.isCompleted = true;
-        // 觸發升級事件
+        // Trigger the upgrade event
         emit NFTUpgraded(
             courseId,
             student,
@@ -165,28 +165,28 @@ contract CourseCertificate is ERC1155, Ownable {
         return (nftLevel.level, nftLevel.lastUpgradeTime, nftLevel.isCompleted);
     }
 
-    // 覆寫 _update 函數來實現轉移限制
+    // Override the _update function to implement transfer restrictions
     function _update(
         address from,
         address to,
         uint256[] memory ids,
         uint256[] memory values
     ) internal virtual override {
-        // 如果是鑄造（from 為零地址），則不需要檢查
+        // If minting (from is zero address), no need to check
         if (from != address(0)) {
-            // 檢查每個要轉移的 token
+            // Check each token to be transferred
             for (uint256 i = 0; i < ids.length; i++) {
-                // 如果是轉移（非銷毀），則檢查是否允許轉移
+                // If transferring (not destroying), check if transfer is allowed
                 if (to != address(0)) {
                     uint256 tokenId = ids[i];
                     NFTLevel memory nftLevel = nftLevels[tokenId][from];
-                    // 如果 NFT 已經完成課程，則不允許轉移
+                    // If the NFT is completed, transfer is not allowed
                     require(!nftLevel.isCompleted, "Completed course NFT cannot be transferred");
                 }
             }
         }
 
-        // 調用父合約的實現
+        // Call the implementation of the parent contract
         super._update(from, to, ids, values);
     }
 }
