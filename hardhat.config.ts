@@ -11,7 +11,14 @@ loadTasks(taskFolder)
 const chainIds = {
     hardhat: 31337,
     'arbitrum-sepolia': 421614,
-    // TODO: Add other chains that ETHGlobal Hackathon Sponsors
+    'linea-sepolia': 59141,
+    'flow-evm-testnet': 545,
+    'scroll-sepolia': 534351,
+    'mantle-sepolia': 5003,
+    'zircuit-testnet': 48899,
+    'base-sepolia': 84532,
+    'rootstock-testnet': 31,
+    'morph-holesky': 2810,
 }
 // Ensure that we have all the environment variables we need.
 const pk: string | undefined = process.env.PRIVATE_KEY
@@ -25,9 +32,17 @@ if (!infuraApiKey) {
 function getChainConfig (chain: keyof typeof chainIds): NetworkUserConfig {
   let jsonRpcUrl: string
   switch (chain) {
-    case 'arbitrum-sepolia':
-      jsonRpcUrl = `https://arbitrum-sepolia.infura.io/v3/${infuraApiKey}`
+    case 'flow-evm-testnet':
+      jsonRpcUrl = `https://testnet.evm.nodes.onflow.org`
       break
+    case 'zircuit-testnet':
+      jsonRpcUrl = `https://zircuit1-testnet.p2pify.com/`
+      break
+    case 'rootstock-testnet':
+      jsonRpcUrl = `https://public-node.testnet.rsk.co`
+      break
+    case 'morph-holesky':
+      jsonRpcUrl = `https://rpc-quicknode-holesky.morphl2.io`
     default:
       jsonRpcUrl = `https://${chain}.infura.io/v3/${infuraApiKey}`
   }
@@ -46,7 +61,14 @@ const config: HardhatUserConfig = {
     local: {
       url: 'http://127.0.0.1:8545',
     },
-    'arbitrum-sepolia': getChainConfig('arbitrum-sepolia'),
+    'linea-sepolia': getChainConfig('linea-sepolia'),
+    'flow-evm-testnet': getChainConfig('flow-evm-testnet'),
+    'scroll-sepolia': getChainConfig('scroll-sepolia'),
+    'mantle-sepolia': getChainConfig('mantle-sepolia'),
+    'zircuit-testnet': getChainConfig('zircuit-testnet'),
+    'base-sepolia': getChainConfig('base-sepolia'),
+    'rootstock-testnet': getChainConfig('rootstock-testnet'),
+    'morph-holesky': getChainConfig('morph-holesky'),
   },
   paths: {
     artifacts: './artifacts',
@@ -72,16 +94,49 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      arbitrumSepolia: process.env.ARBITRUMSCAN_API_KEY || '',
+      lineaSepolia: process.env.ETHERSCAN_API_KEY || '',
+      flowEvmTestnet: 'NO_API_KEY',
+      scrollSepolia: process.env.ETHERSCAN_API_KEY || '',
+      mantleSepolia: process.env.ETHERSCAN_API_KEY || '',
+      zircuitTestnet: process.env.ZIRCUIT_EXPLORER_API_KEY || '',
+      baseSepolia: process.env.ETHERSCAN_API_KEY || '',
+      rootstockTestnet: 'NO_API_KEY',
+      morphHolesky: 'NO_API_KEY',
     },
-    customChains: [{
-      network: 'arbitrumSepolia',
-      chainId: chainIds['arbitrum-sepolia'],
-      urls: {
-        apiURL: 'https://api-sepolia.arbitrum.io/api',
-        browserURL: 'https://sepolia.arbitrum.io/',
+    customChains: [
+      {
+        network: 'flowEvmTestnet',
+        chainId: chainIds['flow-evm-testnet'],
+        urls: {
+        apiURL: 'https://evm-testnet.flowscan.io/api',
+        browserURL: 'https://evm-testnet.flowscan.io/',
+        },
       },
-    }],
+      {
+        network: 'zircuitTestnet',
+        chainId: chainIds['zircuit-testnet'],
+        urls: {
+          apiURL: 'https://explorer.testnet.zircuit.com/api/contractVerifyHardhat',
+          browserURL: 'https://explorer.testnet.zircuit.com/',
+        },
+      },
+      {
+        network: 'rootstockTestnet',
+        chainId: chainIds['rootstock-testnet'],
+        urls: {
+          apiURL: 'https://rootstock-testnet.blockscout.com/api/',
+          browserURL: 'https://rootstock-testnet.blockscout.com/',
+        },
+      },
+      {
+        network: 'morphHolesky',
+        chainId: chainIds['morph-holesky'],
+        urls: {
+          apiURL: 'https://explorer-api-holesky.morphl2.io/api',
+          browserURL: 'https://explorer-holesky.morphl2.io/',
+        },
+      }
+    ]
   },
   gasReporter: {
     currency: 'USD',
