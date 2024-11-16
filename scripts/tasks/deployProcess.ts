@@ -20,3 +20,131 @@ task('deploy:contract', 'Deploy contract')
     await deployContract.waitForDeployment()
   },
   )
+
+task('deploy:Counter', 'Deploy Counter contract')
+  .addFlag('verify', 'Validate contract after deploy')
+  .setAction(async ({ verify }, hre) => {
+    await hre.run('compile')
+    const [signer]: any = await hre.ethers.getSigners()
+    const contractFactory = await hre.ethers.getContractFactory('Counter')
+    const deployContract = await contractFactory.connect(signer).deploy()
+    console.log(`Counter deployed to`, await deployContract.getAddress())
+
+    const address = {
+      main: await deployContract.getAddress(),
+    }
+    const addressData = JSON.stringify(address)
+    writeFileSync(`scripts/address/${hre.network.name}/`, `Counter.json`, addressData)
+
+    await deployContract.waitForDeployment()
+
+    if (verify) {
+      console.log('Verifying contract...')
+      // await deployContract.deployTransaction.wait(3)
+      try {
+        await hre.run('verify:verify', {
+          address: await deployContract.getAddress(),
+          constructorArguments: [],
+          contract: 'src/Counter.sol:Counter',
+        })
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  })
+
+task('deploy:HoneyToken', 'Deploy HoneyToken contract')
+  .addFlag('verify', 'Validate contract after deploy')
+  .setAction(async ({ verify }, hre) => {
+    await hre.run('compile')
+    const [signer]: any = await hre.ethers.getSigners()
+    const contractFactory = await hre.ethers.getContractFactory('HoneyToken')
+    const deployContract = await contractFactory.connect(signer).deploy(signer.address)
+    console.log(`HoneyToken deployed to`, await deployContract.getAddress())
+
+    const address = {
+      main: await deployContract.getAddress(),
+    }
+    const addressData = JSON.stringify(address)
+    writeFileSync(`scripts/address/${hre.network.name}/`, `HoneyToken.json`, addressData)
+
+    await deployContract.waitForDeployment()
+
+    if (verify) {
+      console.log('Verifying contract...')
+      // await deployContract.deployTransaction.wait(3)
+      try {
+        await hre.run('verify:verify', {
+          address: await deployContract.getAddress(),
+          constructorArguments: [signer.address],
+          contract: 'src/HoneyToken.sol:HoneyToken',
+        })
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  })
+
+task('deploy:CourseCertificate', 'Deploy CourseCertificate contract')
+  .addFlag('verify', 'Validate contract after deploy')
+  .setAction(async ({ verify }, hre) => {
+    await hre.run('compile')
+    const [signer]: any = await hre.ethers.getSigners()
+    const contractFactory = await hre.ethers.getContractFactory('CourseCertificate')
+    const deployContract = await contractFactory.connect(signer).deploy()
+    console.log(`CourseCertificate deployed to`, await deployContract.getAddress())
+
+    const address = {
+      main: await deployContract.getAddress(),
+    }
+    const addressData = JSON.stringify(address)
+    writeFileSync(`scripts/address/${hre.network.name}/`, `CourseCertificate.json`, addressData)
+
+    await deployContract.waitForDeployment()
+
+    if (verify) {
+      console.log('Verifying contract...')
+      try {
+        await hre.run('verify:verify', {
+          address: await deployContract.getAddress(),
+          constructorArguments: [],
+          contract: 'src/CourseCertificate.sol:CourseCertificate',
+        })
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  })
+
+task('deploy:CourseAuction', 'Deploy CourseAuction contract')
+  .addParam('courseCertificateAddress')
+  .addParam('honeyTokenAddress')
+  .addFlag('verify', 'Validate contract after deploy')
+  .setAction(async ({ courseCertificateAddress, honeyTokenAddress, verify }, hre) => {
+    await hre.run('compile')
+    const [signer]: any = await hre.ethers.getSigners()
+    const contractFactory = await hre.ethers.getContractFactory('CourseAuction')
+    const deployContract = await contractFactory.connect(signer).deploy(courseCertificateAddress, honeyTokenAddress)
+    console.log(`CourseAuction deployed to`, await deployContract.getAddress())
+
+    const address = {
+      main: await deployContract.getAddress(),
+    }
+    const addressData = JSON.stringify(address)
+    writeFileSync(`scripts/address/${hre.network.name}/`, `CourseAuction.json`, addressData)
+
+    await deployContract.waitForDeployment()
+
+    if (verify) {
+      console.log('Verifying contract...')
+      try {
+        await hre.run('verify:verify', {
+          address: await deployContract.getAddress(),
+          constructorArguments: [courseCertificateAddress, honeyTokenAddress],
+          contract: 'src/CourseAuction.sol:CourseAuction',
+        })
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  })

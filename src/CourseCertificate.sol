@@ -58,7 +58,7 @@ contract CourseCertificate is ERC1155, Ownable {
     address public auctionContract;
 
     constructor() ERC1155("https://your-metadata-uri/{id}.json") Ownable(msg.sender) {
-        _courseIdCounter = 1;
+        _courseIdCounter = 0;
     }
 
     // Set the auction contract address

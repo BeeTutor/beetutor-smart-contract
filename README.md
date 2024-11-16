@@ -1,13 +1,13 @@
 ## Check list for chain config
 
--   [ ] Add Linea sepolia
--   [ ] Add Flow EVM-testnet
--   [ ] Add Scroll Sepolia
--   [ ] Add Mantle Sepolia
--   [ ] Add Zircuit Testnet
--   [ ] Add Base Sepolia
--   [ ] Add Rootstock Testnet
--   [ ] Add Morph Holesky
+- [x] Deploy test contract on Linea sepolia
+- [x] Deploy test contract on Flow EVM-testnet
+- [x] Deploy test contract on Scroll Sepolia
+- [x] Deploy test contract on Mantle Sepolia
+- [x] Deploy test contract on Zircuit Testnet
+- [x] Deploy test contract on Base Sepolia
+- [x] Deploy test contract on Rootstock Testnet
+- [x] Deploy test contract on Morph Holesky
 
 ## Foundry
 
@@ -15,10 +15,10 @@
 
 Foundry consists of:
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
+- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
+- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
+- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
 
 ## Documentation
 
