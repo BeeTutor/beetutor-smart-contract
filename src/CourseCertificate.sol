@@ -166,7 +166,7 @@ contract CourseCertificate is ERC1155, Ownable {
         return (nftLevel.level, nftLevel.lastUpgradeTime, nftLevel.isCompleted);
     }
 
-        function getBatchInfo(
+    function getBatchInfo(
         uint256 courseId,
         uint256 batchId
     ) external view returns (

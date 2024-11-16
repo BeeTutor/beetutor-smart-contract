@@ -6,10 +6,15 @@ import {HoneyToken} from "../src/HoneyToken.sol";
 import {CourseCertificate} from "../src/CourseCertificate.sol";
 import {CourseAuction} from "../src/CourseAuction.sol";
 
+
 contract DeployAndSetupScript is Script {
     HoneyToken public honeyToken;
     CourseCertificate public courseCertificate;
     CourseAuction public courseAuction;
+
+    address constant HONEY_TOKEN_ADDRESS = 0x98Fb90cc2a0A62Ea13d026b86160Db6Cc37d9567;  
+    address constant COURSE_CERTIFICATE_ADDRESS = 0x6CD1Fb9220741B20a560289638097F5B691CF09c;
+    address constant COURSE_AUCTION_ADDRESS = 0x4c32cc158Bcc32fBbdd26A842917c01431dA063C;
 
     address public deployer;
     address public teacher;
@@ -23,39 +28,26 @@ contract DeployAndSetupScript is Script {
     address public student8;
 
     function setUp() public {
-        deployer = vm.rememberKey(0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80);
-        teacher = vm.rememberKey(0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d);
-        student = vm.rememberKey(0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a);
-        student2 = vm.rememberKey(0x7c852118294e51e653712a81e05800f419141751be58f605c371e15141b007a6);
-        student3 = vm.rememberKey(0x47e179ec197488593b187f80a00eb0da91f1b9d0b13f8733639f19c30a34926a);
-        student4 = vm.rememberKey(0x8b3a350cf5c34c9194ca85829a2df0ec3153be0318b5e2d3348e872092edffba);
-        student5 = vm.rememberKey(0x92db14e403b83dfe3df233f83dfa3a0d7096f21ca9b0d6d6b8d88b2b4ec1564e);
-        student6 = vm.rememberKey(0x4bbbf85ce3377467afe5d46f804f221813b2bb87f24d81f60f1fcdbf7cbf4356);  
-        student7 = vm.rememberKey(0xdbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97);
-        student8 = vm.rememberKey(0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6);
-    }
+        honeyToken = HoneyToken(HONEY_TOKEN_ADDRESS);
+        courseCertificate = CourseCertificate(COURSE_CERTIFICATE_ADDRESS);
+        courseAuction = CourseAuction(COURSE_AUCTION_ADDRESS);
 
-    function getRandomBid(address bidder) internal view returns (uint256) {
-        return 10 ether + (uint256(keccak256(abi.encodePacked(block.timestamp, bidder))) % 91 ether);
+        deployer = vm.rememberKey(0xe303c14ef39df3d9261e95097b6a220719b1d9364e516cc9f93ff572b5ca21fb);
+        teacher = vm.rememberKey(0xdeb7670fb0b2727fb322e64a14144950e25e80b22ba32b8ca49abd2dd6a2241c);
+        student = vm.rememberKey(0xd6bd9c3a5f2d64e54e1d7aec9bdb5d81d6b318908f73be9afb4b11f79aeebcb7);
+        student2 = vm.rememberKey(0x350ffd0a7398c548c1c793b745b09213b504833163db45b27d07b4f188f35f16);
+        student3 = vm.rememberKey(0x5de9c11f3fb9aa019fbcc51058c9da5a8971c633c926db3c8451f88b78ecdd65);
+        student4 = vm.rememberKey(0x33ffd1b1061abd7461b08341d9460b2fd6e83e4a21cb19ffef0ac0fd981e545d);
+        student5 = vm.rememberKey(0x9f57d51749a1c2d92910c595a797acb87b34779e4a3c17e184c0f1733c8270d5);
+        student6 = vm.rememberKey(0xe8be4e127e763a982eee303ef6c9e6e51e89f8d8a6157e2acb36d0a19d346ef7);  
+        student7 = vm.rememberKey(0x5144c247490ae5b2e432822b7e6e35b559588279b8b465114170e7886c39a44d);
+        student8 = vm.rememberKey(0xfc8b10fb3900c06d11ad041e6a8c0f0b9bf73b430fc6f0836f73a5ecad43d4b1);
     }
 
     function run() public {
         vm.startBroadcast(deployer);
-        // deploy contracts
-        honeyToken = new HoneyToken(deployer);
-        courseCertificate = new CourseCertificate();
-        courseAuction = new CourseAuction(
-            address(courseCertificate),
-            address(honeyToken)
-        );
-
-        console2.log("honeyToken: %s", address(honeyToken));
-        console2.log("courseCertificate: %s", address(courseCertificate));
-        console2.log("courseAuction: %s", address(courseAuction));
-
         // set contract relationships
         courseCertificate.setAuctionContract(address(courseAuction));
-
         // mint some HoneyToken to student
         honeyToken.mint(student, 1000 ether);
         honeyToken.mint(student2, 1000 ether);
@@ -106,9 +98,9 @@ contract DeployAndSetupScript is Script {
         honeyToken.approve(address(courseAuction), honeyToken.balanceOf(student));
 
         // student place bid
-        for (uint256 i = 0; i < 3; i++) {
-            courseAuction.placeBid(courseId, i, getRandomBid(student));
-        }
+        courseAuction.placeBid(courseId, 0, 17 ether);
+        courseAuction.placeBid(courseId, 1, 10 ether);
+        courseAuction.placeBid(courseId, 2, 19 ether);
 
         vm.stopBroadcast();
 
@@ -118,9 +110,9 @@ contract DeployAndSetupScript is Script {
         honeyToken.approve(address(courseAuction), honeyToken.balanceOf(student2));
 
         // student place bid
-        for (uint256 i = 0; i < 3; i++) {
-            courseAuction.placeBid(courseId, i, getRandomBid(student2));
-        }
+        courseAuction.placeBid(courseId, 0, 18 ether);
+        courseAuction.placeBid(courseId, 1, 18 ether);
+        courseAuction.placeBid(courseId, 2, 20 ether);
 
         vm.stopBroadcast();
 
@@ -130,9 +122,9 @@ contract DeployAndSetupScript is Script {
         honeyToken.approve(address(courseAuction), honeyToken.balanceOf(student3));
 
         // student place bid
-        for (uint256 i = 0; i < 3; i++) {
-            courseAuction.placeBid(courseId, i, getRandomBid(student3));
-        }
+        courseAuction.placeBid(courseId, 0, 19 ether);
+        courseAuction.placeBid(courseId, 1, 22 ether);
+        courseAuction.placeBid(courseId, 2, 28 ether);
 
         vm.stopBroadcast();
 
@@ -142,9 +134,9 @@ contract DeployAndSetupScript is Script {
         honeyToken.approve(address(courseAuction), honeyToken.balanceOf(student4));
 
         // student place bid
-        for (uint256 i = 0; i < 3; i++) {
-            courseAuction.placeBid(courseId, i, getRandomBid(student4));
-        }
+        courseAuction.placeBid(courseId, 0, 27 ether);
+        courseAuction.placeBid(courseId, 1, 27 ether);
+        courseAuction.placeBid(courseId, 2, 40 ether);
 
         vm.stopBroadcast();
 
@@ -154,9 +146,9 @@ contract DeployAndSetupScript is Script {
         honeyToken.approve(address(courseAuction), honeyToken.balanceOf(student5));
 
         // student place bid
-        for (uint256 i = 0; i < 3; i++) {
-            courseAuction.placeBid(courseId, i, getRandomBid(student5));
-        }
+        courseAuction.placeBid(courseId, 0, 54 ether);
+        courseAuction.placeBid(courseId, 1, 43 ether);
+        courseAuction.placeBid(courseId, 2, 52 ether);
 
         vm.stopBroadcast();
 
@@ -166,9 +158,9 @@ contract DeployAndSetupScript is Script {
         honeyToken.approve(address(courseAuction), honeyToken.balanceOf(student6));
 
         // student place bid
-        for (uint256 i = 0; i < 3; i++) {
-            courseAuction.placeBid(courseId, i, getRandomBid(student6));
-        }
+        courseAuction.placeBid(courseId, 0, 81 ether);
+        courseAuction.placeBid(courseId, 1, 52 ether);
+        courseAuction.placeBid(courseId, 2, 68 ether);
 
         vm.stopBroadcast();
 
@@ -178,9 +170,9 @@ contract DeployAndSetupScript is Script {
         honeyToken.approve(address(courseAuction), honeyToken.balanceOf(student7));
 
         // student place bid
-        for (uint256 i = 0; i < 3; i++) {
-            courseAuction.placeBid(courseId, i, getRandomBid(student7));
-        }
+        courseAuction.placeBid(courseId, 0, 90 ether);
+        courseAuction.placeBid(courseId, 1, 58 ether);
+        courseAuction.placeBid(courseId, 2, 87 ether);
 
         vm.stopBroadcast();
 
@@ -190,12 +182,12 @@ contract DeployAndSetupScript is Script {
         honeyToken.approve(address(courseAuction), honeyToken.balanceOf(student8));
 
         // student place bid
-        for (uint256 i = 0; i < 3; i++) {
-            courseAuction.placeBid(courseId, i, getRandomBid(student8));
-        }
+        courseAuction.placeBid(courseId, 0, 94 ether);
+        courseAuction.placeBid(courseId, 1, 66 ether);
+        courseAuction.placeBid(courseId, 2, 94 ether);
 
         vm.stopBroadcast();
-        // switch to teacher
+
         vm.startBroadcast(teacher);
 
         courseAuction.finalizeAuction(courseId, 0);
