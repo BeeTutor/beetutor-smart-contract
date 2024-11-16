@@ -12,7 +12,8 @@
     "deploy:Counter": "hardhat deploy:Counter --verify",
     "deploy:HoneyToken": "hardhat deploy:HoneyToken --verify",
     "deploy:CourseCertificate": "hardhat deploy:CourseCertificate --verify",
-    "deploy:CourseAuction": "hardhat deploy:CourseAuction --verify"
+    "deploy:CourseAuction": "hardhat deploy:CourseAuction --verify",
+    "deploy:testData": "forge script script/DeployAndSetup.s.sol --rpc-url http://localhost:8545 --broadcast"
   },
   "keywords": [],
   "author": "",
