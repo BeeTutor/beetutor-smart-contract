@@ -8,7 +8,11 @@
     "test": "test"
   },
   "scripts": {
-    "compile": "hardhat compile"
+    "compile": "hardhat compile",
+    "deploy:Counter": "hardhat deploy:Counter --verify",
+    "deploy:HoneyToken": "hardhat deploy:HoneyToken --verify",
+    "deploy:CourseCertificate": "hardhat deploy:CourseCertificate --verify",
+    "deploy:CourseAuction": "hardhat deploy:CourseAuction --verify --courseCertificateAddress"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +20,7 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.8",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.11",
     "@openzeppelin/contracts": "^5.1.0",
     "@typechain/hardhat": "^9.1.0",
     "@types/node": "^22.9.0",

@@ -1,13 +1,13 @@
 ## Check list for chain config
 
-- [ ] Deploy test contract on Linea sepolia
-- [ ] Deploy test contract on Flow EVM-testnet
-- [ ] Deploy test contract on Scroll Sepolia
-- [ ] Deploy test contract on Mantle Sepolia
-- [ ] Deploy test contract on Zircuit Testnet
-- [ ] Deploy test contract on Base Sepolia
-- [ ] Deploy test contract on Rootstock Testnet
-- [ ] Deploy test contract on Morph Holesky
+- [x] Deploy test contract on Linea sepolia
+- [x] Deploy test contract on Flow EVM-testnet
+- [x] Deploy test contract on Scroll Sepolia
+- [x] Deploy test contract on Mantle Sepolia
+- [x] Deploy test contract on Zircuit Testnet
+- [x] Deploy test contract on Base Sepolia
+- [x] Deploy test contract on Rootstock Testnet
+- [x] Deploy test contract on Morph Holesky
 
 ## Foundry
 

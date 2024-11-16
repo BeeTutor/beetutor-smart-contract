@@ -83,13 +83,7 @@ contract CourseAuction {
             })
         );
 
-        emit BidPlaced(
-            courseId,
-            batchId,
-            msg.sender,
-            block.timestamp,
-            msg.value
-        );
+        emit BidPlaced(courseId, batchId, msg.sender, block.timestamp, msg.value);
     }
 
     // Close the bidding and confirm the winning bidder.
