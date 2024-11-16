@@ -32,6 +32,10 @@ contract DeployAndSetupScript is Script {
             address(honeyToken)
         );
 
+        console2.log("honeyToken: %s", address(honeyToken));
+        console2.log("courseCertificate: %s", address(courseCertificate));
+        console2.log("courseAuction: %s", address(courseAuction));
+
         // set contract relationships
         courseCertificate.setAuctionContract(address(courseAuction));
 
