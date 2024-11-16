@@ -101,7 +101,7 @@ npm run deploy:HoneyToken -- --network <network>
 npm run deploy:CourseCertificate -- --network <network>
 
 # Deploy CourseAuction contract
-npm run deploy:CourseAuction -- --courseCertificateAddress <courseCertificateAddress> --honeyTokenAddress <honeyTokenAddress> --network <network>
+npm run deploy:CourseAuction -- --coursecertificateaddress <courseCertificateAddress> --honeytokenaddress <honeyTokenAddress> --network <network>
 ```
 
 ```bash
