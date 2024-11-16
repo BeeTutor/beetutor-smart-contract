@@ -25,8 +25,19 @@ contract CourseAuction {
     // mapping：courseId => batchId => All Bids
     mapping(uint256 => mapping(uint256 => Bid[])) public bids;
 
-    event AuctionCreated(uint256 courseId, uint256 batchId, uint256 startTime, uint256 endTime, uint256 minPrice);
-    event BidPlaced(uint256 courseId, uint256 batchId, address bidder, uint256 amount);
+    event AuctionCreated(
+        uint256 courseId,
+        uint256 batchId,
+        uint256 startTime,
+        uint256 endTime,
+        uint256 minPrice
+    );
+    event BidPlaced(
+        uint256 courseId,
+        uint256 batchId,
+        address bidder,
+        uint256 amount
+    );
     event AuctionFinalized(uint256 courseId, uint256 batchId);
 
     constructor(address _courseCertificate) {
@@ -62,10 +73,9 @@ contract CourseAuction {
         require(block.timestamp < auction.endTime, "Auction ended");
         require(msg.value >= auction.minPrice, "Bid too low");
 
-        bids[courseId][batchId].push(Bid({
-            bidder: msg.sender,
-            amount: msg.value
-        }));
+        bids[courseId][batchId].push(
+            Bid({bidder: msg.sender, amount: msg.value})
+        );
 
         emit BidPlaced(courseId, batchId, msg.sender, msg.value);
     }
@@ -91,12 +101,21 @@ contract CourseAuction {
         }
 
         // Get the maximum number of students.
-        (, , , uint256 maxStudents, ) = courseCertificate.batches(courseId, batchId);
+        (, , , uint256 maxStudents, ) = courseCertificate.batches(
+            courseId,
+            batchId
+        );
 
         // Mint NFTs for the winners.
-        uint256 winnerCount = maxStudents < auctionBids.length ? maxStudents : auctionBids.length;
+        uint256 winnerCount = maxStudents < auctionBids.length
+            ? maxStudents
+            : auctionBids.length;
         for (uint256 i = 0; i < winnerCount; i++) {
-            courseCertificate.mintForWinner(auctionBids[i].bidder, courseId, batchId);
+            courseCertificate.mintForWinner(
+                auctionBids[i].bidder,
+                courseId,
+                batchId
+            );
         }
 
         // Return the bids of the non-winning bidders.
@@ -108,7 +127,10 @@ contract CourseAuction {
         emit AuctionFinalized(courseId, batchId);
     }
 
-    function getActionBidsLength(uint256 courseId, uint256 batchId) external view returns (uint256) {
-        return bids[courseId][batchId].length;
+    function getBids(
+        uint256 courseId,
+        uint256 batchId
+    ) public view returns (Bid[] memory) {
+        return bids[courseId][batchId];
     }
 }
