@@ -2,6 +2,7 @@ import { HardhatUserConfig } from 'hardhat/config'
 import { NetworkUserConfig } from 'hardhat/types'
 import '@nomicfoundation/hardhat-ethers'
 import '@nomicfoundation/hardhat-toolbox'
+import '@nomicfoundation/hardhat-verify'
 import { config as dotenvConfig } from 'dotenv'
 import { resolve } from 'path'
 import { loadTasks } from './helpers/hardhatConfigHelpers'
@@ -105,6 +106,14 @@ const config: HardhatUserConfig = {
     },
     customChains: [
       {
+        network: 'lineaSepolia',
+        chainId: chainIds['linea-sepolia'],
+        urls: {
+          apiURL: `https://api.etherscan.io/v2/api?chainid=${chainIds['linea-sepolia']}`,
+          browserURL: `https://sepolia.lineascan.build/`,
+        },
+      },
+      {
         network: 'flowEvmTestnet',
         chainId: chainIds['flow-evm-testnet'],
         urls: {
@@ -113,11 +122,35 @@ const config: HardhatUserConfig = {
         },
       },
       {
+        network: 'scrollSepolia',
+        chainId: chainIds['scroll-sepolia'],
+        urls: {
+          apiURL: `https://api.etherscan.io/v2/api?chainid=${chainIds['scroll-sepolia']}`,
+          browserURL: `https://sepolia.scrollscan.com/`,
+        },
+      },
+      {
+        network: 'mantleSepolia',
+        chainId: chainIds['mantle-sepolia'],
+        urls: {
+          apiURL: `https://api.etherscan.io/v2/api?chainid=${chainIds['mantle-sepolia']}`,
+          browserURL: `https://explorer.sepolia.mantle.xyz/`,
+        },
+      },
+      {
         network: 'zircuitTestnet',
         chainId: chainIds['zircuit-testnet'],
         urls: {
           apiURL: 'https://explorer.testnet.zircuit.com/api/contractVerifyHardhat',
           browserURL: 'https://explorer.testnet.zircuit.com/',
+        },
+      },
+      {
+        network: 'baseSepolia',
+        chainId: chainIds['base-sepolia'],
+        urls: {
+          apiURL: `https://api.etherscan.io/v2/api?chainid=${chainIds['base-sepolia']}`,
+          browserURL: `https://sepolia.basescan.org/`,
         },
       },
       {
