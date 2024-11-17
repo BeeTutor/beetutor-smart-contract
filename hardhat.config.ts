@@ -95,12 +95,12 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      lineaSepolia: process.env.ETHERSCAN_API_KEY || '',
+      lineaSepolia: 'NO_API_KEY',
       flowEvmTestnet: 'NO_API_KEY',
       scrollSepolia: process.env.ETHERSCAN_API_KEY || '',
-      mantleSepolia: process.env.ETHERSCAN_API_KEY || '',
+      mantleSepolia: 'NO_API_KEY',
       zircuitTestnet: process.env.ZIRCUIT_EXPLORER_API_KEY || '',
-      baseSepolia: process.env.ETHERSCAN_API_KEY || '',
+      baseSepolia: 'NO_API_KEY',
       rootstockTestnet: 'NO_API_KEY',
       morphHolesky: 'NO_API_KEY',
     },
@@ -109,8 +109,8 @@ const config: HardhatUserConfig = {
         network: 'lineaSepolia',
         chainId: chainIds['linea-sepolia'],
         urls: {
-          apiURL: `https://api.etherscan.io/v2/api?chainid=${chainIds['linea-sepolia']}`,
-          browserURL: `https://sepolia.lineascan.build/`,
+          apiURL: "https://api-explorer.sepolia.linea.build/api",
+          browserURL: "https://explorer.sepolia.linea.build"
         },
       },
       {
@@ -133,7 +133,7 @@ const config: HardhatUserConfig = {
         network: 'mantleSepolia',
         chainId: chainIds['mantle-sepolia'],
         urls: {
-          apiURL: `https://api.etherscan.io/v2/api?chainid=${chainIds['mantle-sepolia']}`,
+          apiURL: `https://explorer.sepolia.mantle.xyz:443/api`,
           browserURL: `https://explorer.sepolia.mantle.xyz/`,
         },
       },
@@ -149,8 +149,8 @@ const config: HardhatUserConfig = {
         network: 'baseSepolia',
         chainId: chainIds['base-sepolia'],
         urls: {
-          apiURL: `https://api.etherscan.io/v2/api?chainid=${chainIds['base-sepolia']}`,
-          browserURL: `https://sepolia.basescan.org/`,
+          apiURL: `https://base-sepolia.blockscout.com/api`,
+          browserURL: `https://base-sepolia.blockscout.com`,
         },
       },
       {
