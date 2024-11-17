@@ -12,9 +12,9 @@ contract DeployAndSetupScript is Script {
     CourseCertificate public courseCertificate;
     CourseAuction public courseAuction;
 
-    address constant HONEY_TOKEN_ADDRESS = 0x98Fb90cc2a0A62Ea13d026b86160Db6Cc37d9567;  
-    address constant COURSE_CERTIFICATE_ADDRESS = 0x6CD1Fb9220741B20a560289638097F5B691CF09c;
-    address constant COURSE_AUCTION_ADDRESS = 0x4c32cc158Bcc32fBbdd26A842917c01431dA063C;
+    address constant HONEY_TOKEN_ADDRESS = 0x42B08bA0335E47866D57f1902D9fb77a9188cB25;  
+    address constant COURSE_CERTIFICATE_ADDRESS = 0x7BF9f689EA7e08c4257c75f58401Ecf534358AA2;
+    address constant COURSE_AUCTION_ADDRESS = 0xca0A039227cf13aDE516BAD1E1D465aa0b67aE8e;
 
     address public deployer;
     address public teacher;

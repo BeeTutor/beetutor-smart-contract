@@ -11,7 +11,6 @@ const taskFolder = ['tasks']
 loadTasks(taskFolder)
 const chainIds = {
     hardhat: 31337,
-    'arbitrum-sepolia': 421614,
     'linea-sepolia': 59141,
     'flow-evm-testnet': 545,
     'scroll-sepolia': 534351,

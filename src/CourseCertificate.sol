@@ -111,8 +111,8 @@ contract CourseCertificate is ERC1155, Ownable {
         uint256 courseId,
         uint256 batchId
     ) external onlyAuction returns (bool) {
-        require(courses[courseId].isActive, "Course is not active");
-        require(batches[courseId][batchId].isActive, "Batch is not active");
+        // require(courses[courseId].isActive, "Course is not active");
+        // require(batches[courseId][batchId].isActive, "Batch is not active");
         require(batches[courseId][batchId].enrolledStudents < batches[courseId][batchId].maxStudents, "Batch is full");
         
         _mint(winner, courseId, 1, "");

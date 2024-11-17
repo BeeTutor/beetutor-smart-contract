@@ -44,15 +44,6 @@ contract CourseAuction {
     );
     event AuctionFinalized(uint256 courseId, uint256 batchId);
 
-    modifier onlyTeacher(uint256 courseId) {
-        (address teacher, , , , ) = courseCertificate.courses(courseId);
-        require(
-            msg.sender == teacher,
-            "Only course teacher can call this function"
-        );
-        _;
-    }
-
     constructor(address _courseCertificate, address _honeyToken) {
         courseCertificate = CourseCertificate(_courseCertificate);
         honeyToken = HoneyToken(_honeyToken);
@@ -111,8 +102,7 @@ contract CourseAuction {
     function finalizeAuction(
         uint256 courseId,
         uint256 batchId
-    ) external onlyTeacher(courseId) {
-        Auction storage auction = auctions[courseId][batchId];
+    ) external {
         // require(auction.isActive, "Auction not active"); // To facilitate testing, temporarily remove this restriction, but it must be enabled in the production environment.
         // require(block.timestamp >= auction.endTime, "Auction not ended"); // To facilitate testing, temporarily remove this restriction, but it must be enabled in the production environment.
 
@@ -162,7 +152,6 @@ contract CourseAuction {
             );
         }
 
-        auction.isActive = false;
         emit AuctionFinalized(courseId, batchId);
     }
 
