@@ -1,3 +1,43 @@
+## Smart-contract address
+
+1. linea-sepolia
+[HoneyToken](https://explorer.sepolia.linea.build/address/0x98Fb90cc2a0A62Ea13d026b86160Db6Cc37d9567)
+[CourseCertificate](https://explorer.sepolia.linea.build/address/0x6CD1Fb9220741B20a560289638097F5B691CF09c)
+[CourseAuction](https://explorer.sepolia.linea.build/address/0x4c32cc158Bcc32fBbdd26A842917c01431dA063C)
+
+2. flow-evm-testnet
+[HoneyToken](https://evm-testnet.flowscan.io/address/0x42B08bA0335E47866D57f1902D9fb77a9188cB25)
+[CourseCertificate](https://evm-testnet.flowscan.io/address/0x7BF9f689EA7e08c4257c75f58401Ecf534358AA2)
+[CourseAuction](https://evm-testnet.flowscan.io/address/0xca0A039227cf13aDE516BAD1E1D465aa0b67aE8e)
+
+3. scroll-sepolia
+[HoneyToken](https://sepolia.scrollscan.com/address/0x42B08bA0335E47866D57f1902D9fb77a9188cB25)
+[CourseCertificate](https://sepolia.scrollscan.com/address/0x7BF9f689EA7e08c4257c75f58401Ecf534358AA2)
+[CourseAuction](https://sepolia.scrollscan.com/address/0xca0A039227cf13aDE516BAD1E1D465aa0b67aE8e)
+
+4. mantle-sepolia
+[HoneyToken](https://explorer.sepolia.mantle.xyz/address/0xca0A039227cf13aDE516BAD1E1D465aa0b67aE8e)
+
+5. zircuit-testnet
+[HoneyToken](https://explorer.testnet.zircuit.com/address/0x42B08bA0335E47866D57f1902D9fb77a9188cB25)
+[CourseCertificate](https://explorer.testnet.zircuit.com/address/0x7BF9f689EA7e08c4257c75f58401Ecf534358AA2)
+[CourseAuction](https://explorer.testnet.zircuit.com/address/0xca0A039227cf13aDE516BAD1E1D465aa0b67aE8e)
+
+6. base-sepolia
+[HoneyToken](https://base-sepolia.blockscout.com/address/0x42B08bA0335E47866D57f1902D9fb77a9188cB25)
+[CourseCertificate](https://base-sepolia.blockscout.com/address/0x6611741f399813F5b1A69c5d7834fd3dec2b5Ba5)
+[CourseAuction](https://base-sepolia.blockscout.com/address/0x24f4e3644eC2aBB1EbcfABcf36282FE28b5271f8)
+
+7. rootstock-testnet
+[HoneyToken](https://rootstock-testnet.blockscout.com/address/0xdD56eF0538a6566D40111f426BBA380618114C1f)
+[CourseCertificate](https://rootstock-testnet.blockscout.com/address/0xF9cF885C2F57eEcd1596a4BdE410ef62E237a61d)
+[CourseAuction](https://base-sepolia.blockscout.com/address/0x24f4e3644eC2aBB1EbcfABcf36282FE28b5271f8)
+
+8. morph-holesky
+[HoneyToken](https://base-sepolia.blockscout.com/address/0x42B08bA0335E47866D57f1902D9fb77a9188cB25)
+[CourseCertificate](https://base-sepolia.blockscout.com/address/0x6611741f399813F5b1A69c5d7834fd3dec2b5Ba5)
+[CourseAuction](https://base-sepolia.blockscout.com/address/0x24f4e3644eC2aBB1EbcfABcf36282FE28b5271f8)
+
 ## Prerequisites
 
 - Node.js 
